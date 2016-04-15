@@ -1,2 +1,22 @@
-CV_CAP_PROP_FRAME_WIDTH = 3
-CV_CAP_PROP_FRAME_HEIGHT = 4
+CV_CAP_PROP_POS_MSEC = 0 # Current position of the video file in milliseconds.
+CV_CAP_PROP_POS_FRAMES = 1 # 0-based index of the frame to be decoded/captured next.
+CV_CAP_PROP_POS_AVI_RATIO = 2 # Relative position of the video file
+CV_CAP_PROP_FRAME_WIDTH = 3 # Width of the frames in the video stream.
+CV_CAP_PROP_FRAME_HEIGHT = 4 # Height of the frames in the video stream.
+CV_CAP_PROP_FPS = 5 # Frame rate.
+CV_CAP_PROP_FOURCC = 6 # 4-character code of codec.
+CV_CAP_PROP_FRAME_COUNT = 7 # Number of frames in the video file.
+CV_CAP_PROP_FORMAT = 8 # Format of the Mat objects returned by retrieve() .
+CV_CAP_PROP_MODE = 9 # Backend-specific value indicating the current capture mode.
+CV_CAP_PROP_BRIGHTNESS = 10 # Brightness of the image (only for cameras).
+CV_CAP_PROP_CONTRAST = 11 # Contrast of the image (only for cameras).
+CV_CAP_PROP_SATURATION = 12 # Saturation of the image (only for cameras).
+CV_CAP_PROP_HUE = 13 # Hue of the image (only for cameras).
+CV_CAP_PROP_GAIN = 14 # Gain of the image (only for cameras).
+CV_CAP_PROP_EXPOSURE = 15 # Exposure (only for cameras).
+CV_CAP_PROP_CONVERT_RGB = 16 # Boolean flags indicating whether images should be converted to RGB.
+CV_CAP_PROP_WHITE_BALANCE = 17 # Currently unsupported
+CV_CAP_PROP_RECTIFICATION = 18 # Rectification flag for stereo cameras (note: only supported by DC1394 v 2.x backend currently)
+
+#CV_CAP_PROP_FRAME_WIDTH = 3
+#CV_CAP_PROP_FRAME_HEIGHT = 4
