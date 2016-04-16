@@ -56,7 +56,7 @@ class Scanner:
         cv2.rectangle(  frame, 
                         (self.cell_size * i + self.margin + self.grid_size * 3, self.cell_size * j + self.margin), 
                         (self.cell_size * i + self.cell_size - self.margin + self.grid_size * 3, self.cell_size * j + self.cell_size - self.margin), 
-                        tuple(color * 3.0 for color in mean), 
+                        tuple(color for color in mean), 
                         cv2.cv.CV_FILLED
                     )
     
@@ -70,9 +70,9 @@ class Scanner:
         max_count = max(counter.values())
         mode = [[k, v] for k,v in counter.items() if v == max_count]
         
-        print mode
-        return mode[0]
-        #return cv2.mean(cell)
+        #print mode
+        #return mode[0][0]
+        return cv2.mean(cell)
 
     def distance(self, a, b):
         return math.sqrt(math.pow(a["r"] - b["r"], 2) + math.pow(a["g"] - b["g"], 2) + math.pow(a["b"] - b["b"], 2))
@@ -87,7 +87,7 @@ class Scanner:
                 closest = self.COLORS[i]
                 min_distance = dist
 
-        return tuple([closest["r"], closest["g"], closest["b"]])
+        return ([closest["r"], closest["g"], closest["b"]])
 
 
 
