@@ -25,9 +25,8 @@ class Camera:
         self.camera.set(CV_CAP_PROP.CV_CAP_PROP_FRAME_WIDTH, self.VIDEO_WIDTH);
         self.camera.set(CV_CAP_PROP.CV_CAP_PROP_FRAME_HEIGHT, self.VIDEO_HEIGHT);
 
-        self.camera.set(cv2.cv.CV_CAP_PROP_BRIGHTNESS,70)
-        self.camera.set(cv2.cv.CV_CAP_PROP_CONTRAST,100)
-
+        self.camera.set(cv2.cv.CV_CAP_PROP_BRIGHTNESS, 100)
+        self.camera.set(cv2.cv.CV_CAP_PROP_CONTRAST, 100)
 
         self.scanner = Scanner(rubik_dimensions, camera_size, 3)
         
@@ -47,7 +46,7 @@ class Camera:
 
             # Reflect and display the resulting frame
             bgr_frame = cv2.flip(bgr_frame,1)
-            cv2.imshow('frame', bgr_frame)
+            cv2.imshow('Rubik\'s cube scanner', bgr_frame)
 
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
