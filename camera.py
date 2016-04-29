@@ -1,6 +1,6 @@
 import camera_properties as CV_CAP_PROP
 import numpy as np
-from scanner import Scanner
+from Scanner import Scanner
 import cv2
 import sys
 
