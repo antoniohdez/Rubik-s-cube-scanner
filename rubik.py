@@ -207,21 +207,21 @@ class Rubik(object):
         print spaces + str(self.faces['B'][1])
         print spaces + str(self.faces['B'][2])
         print ''
+
         print str(self.faces['L'][0]) + ' ' + str(self.faces['D'][0]) + ' ' + str(self.faces['R'][0])
         print str(self.faces['L'][1]) + ' ' + str(self.faces['D'][1]) + ' ' + str(self.faces['R'][1])
         print str(self.faces['L'][2]) + ' ' + str(self.faces['D'][2]) + ' ' + str(self.faces['R'][2])
         print ''
+
         print spaces + str(self.faces['F'][0])
         print spaces + str(self.faces['F'][1])
         print spaces + str(self.faces['F'][2])
         print ''
+        
         print spaces + str(self.faces['U'][0])
         print spaces + str(self.faces['U'][1])
         print spaces + str(self.faces['U'][2])
-
         print ''
-
-
 
     def scramble(self):
         moves = [self.move_b, self.move_f, self.move_d, self.move_l, self.move_u, self.move_r, self.move_b_prima, self.move_f_prima, self.move_d_prima, self.move_l_prima, self.move_u_prima, self.move_r_prima]
@@ -232,7 +232,6 @@ class Rubik(object):
         return str(self.faces)
 
 if __name__ == '__main__':
-    
     rubik = Rubik()
     rubik.describe()
     rubik.scramble()
