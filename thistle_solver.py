@@ -1,5 +1,4 @@
 # Using this tutorial to solve the cube --> http://www.ryanheise.com/cube/human_thistlethwaite_algorithm.html
-# encoding=utf-8
 from treelib import Node, Tree
 from collections import deque
 from rubik import Rubik
