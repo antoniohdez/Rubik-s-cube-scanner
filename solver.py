@@ -5,14 +5,6 @@ from collections import deque
 from rubik import Rubik
 from sets import Set
 
-
-rubik = None
-moves = {}
-phase_one_moves = {}
-phase_two_moves = {}
-phase_three_moves = {}
-phase_four_moves = {}
-
 def get_moves(rubik, type):
 	moves = {
 		'u': [rubik.move_u],
