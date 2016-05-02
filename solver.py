@@ -19,41 +19,63 @@ def get_moves(rubik, type):
 		'd': [rubik.move_d],
 		'l': [rubik.move_l],
 		'r': [rubik.move_r],
-		'l2': [rubik.move_l, rubik.move_l],
-		'r2': [rubik.move_r, rubik.move_r],
-		'u2': [rubik.move_u, rubik.move_u],
-		'd2': [rubik.move_d, rubik.move_d],
-		'f2': [rubik.move_f, rubik.move_f],
-		'b2': [rubik.move_b, rubik.move_b]
+		'f': [rubik.move_r],
+		'b': [rubik.move_r],
+		'l2': [rubik.move_l2],
+		'r2': [rubik.move_r2],
+		'u2': [rubik.move_u2],
+		'd2': [rubik.move_d2],
+		'f2': [rubik.move_f2],
+		'b2': [rubik.move_b2],
+		'uP': [rubik.move_u_prima],
+		'dP': [rubik.move_d_prima],
+		'lP': [rubik.move_l_prima],
+		'rP': [rubik.move_r_prima],
+		'fP': [rubik.move_f_prima],
+		'bP': [rubik.move_b_prima]
 	}
-	if type == 'phase_one':
+	if type == 'phase_one': #all moves possible
+		return moves
+	elif type == 'phase_two': #G1 moves <L2,R2,F,B,U,D>
 		return {
-			'u': moves['u'],
-			'd': moves['d'],
-			'l': moves['l'],
-			'r': moves['r'],
-			'f2': moves['f2'],
-			'b2': moves['b2']
-		}
-
-	elif type == 'phase_two':
-		return {
-			'u': moves['u'],
-			'd': moves['d'],
 			'l2': moves['l2'],
 			'r2': moves['r2'],
+			'f': moves['f'],
+			'fP': moves['fP'],
 			'f2': moves['f2'],
-			'b2': moves['b2']
-		}
-
-	elif type == 'phase_three' or type == 'phase_four':
-		return {
+			'b': moves['b'],
+			'bP': moves['bP'],
+			'b2': moves['b2'],
+			'u': moves['u'],
+			'uP': moves['uP'],
 			'u2': moves['u2'],
-			'd2': moves['d2'],
+			'd': moves['d'],
+			'dP': moves['dP'],
+			'd2': moves['d2']
+		}
+
+	elif type == 'phase_three': #G2 moves <L2,R2,F2,B2,U,D>
+		return {
 			'l2': moves['l2'],
 			'r2': moves['r2'],
 			'f2': moves['f2'],
-			'b2': moves['b2']
+			'b2': moves['b2'],
+			'u': moves['u'],
+			'uP': moves['uP'],
+			'u2': moves['u2'],
+			'd': moves['d'],
+			'dP': moves['dP'],
+			'd2': moves['d2']
+		}
+
+	elif type == 'phase_four': #G3 moves <L2,R2,F2,B2,U2,D2>
+		return {
+			'l2': moves['l2'],
+			'r2': moves['r2'],
+			'f2': moves['f2'],
+			'b2': moves['b2'],
+			'u2': moves['u2'],
+			'd2': moves['d2']
 		}
 
 def solve(rubik, debug=False):
@@ -76,7 +98,7 @@ def solve(rubik, debug=False):
 		print needed_moves
 		rubik.describe()
 	moves,rubik = phase_four(rubik, debug);
-	needed_moves.extend(phase_four(rubik, debug))
+	needed_moves.extend(moves)
 	if debug:
 		print needed_moves
 		rubik.describe()
@@ -171,7 +193,7 @@ def phase_two_edges(rubik, debug):
 	tree = init_phase(rubik)
 	moves = bfs(rubik, tree, 'phase_two', validate_phase_two_edges)
 	if debug:
-		print tree
+		pass #print tree
 	return moves
 
 
@@ -179,7 +201,7 @@ def phase_two_corners(rubik, debug):
 	tree = init_phase(rubik)
 	moves = bfs(rubik, tree, 'phase_two', validate_phase_two_corners)
 	if debug:
-		print tree
+		pass #print tree
 	return moves
 
 def validate_phase_three_edges(rubik):
@@ -217,14 +239,14 @@ def phase_three_corners(rubik, debug):
 	tree = init_phase(rubik)
 	moves = bfs(rubik, tree, 'phase_three', validate_phase_three_corners)
 	if debug:
-		print tree
+		pass #print tree
 	return moves
 
 def phase_three_edges(rubik, debug):
 	tree = init_phase(rubik)
 	moves = bfs(rubik, tree, 'phase_three', validate_phase_three_edges)
 	if debug:
-		print tree
+		pass #print tree
 	return moves
 
 def validate_phase_four(rubik):
@@ -234,7 +256,7 @@ def phase_four(rubik, debug):
 	tree = init_phase(rubik)
 	moves = bfs(rubik, tree, 'phase_four', validate_phase_four)
 	if debug:
-		print tree
+		pass #print tree
 	return moves
 
 if __name__ == '__main__':

@@ -253,9 +253,11 @@ class Rubik(object):
         print ''
 
     def scramble(self):
-        moves = [self.move_b, self.move_f, self.move_d, self.move_l, self.move_u, self.move_r, self.move_b_prima, self.move_f_prima, self.move_d_prima, self.move_l_prima, self.move_u_prima, self.move_r_prima]
-        for i in xrange(1, randint(50, 100)):
-            choice(moves)()
+        moves = [('b', self.move_b), ('f', self.move_f), ('d', self.move_d), ('l', self.move_l), ('u', self.move_u), ('r', self.move_r), ('b_prima', self.move_b_prima), ('f_prima', self.move_f_prima), ('d_prima', self.move_d_prima), ('l_prima', self.move_l_prima), ('u_prima', self.move_u_prima), ('r_prima', self.move_r_prima)]
+        for i in xrange(1, randint(10, 11)):
+            ch = choice(moves)
+            print ch[0]
+            ch[1]()
 
     def get_state(self):
         return self.faces
