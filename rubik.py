@@ -252,12 +252,16 @@ class Rubik(object):
         print spaces + str(self.faces['U'][2])
         print ''
 
-    def scramble(self):
+    def scramble(self, limit=15):
         moves = [('b', self.move_b), ('f', self.move_f), ('d', self.move_d), ('l', self.move_l), ('u', self.move_u), ('r', self.move_r), ('b_prima', self.move_b_prima), ('f_prima', self.move_f_prima), ('d_prima', self.move_d_prima), ('l_prima', self.move_l_prima), ('u_prima', self.move_u_prima), ('r_prima', self.move_r_prima)]
-        for i in xrange(1, randint(10, 11)):
+        for i in xrange(1, limit):
             ch = choice(moves)
             print ch[0]
             ch[1]()
+
+    def is_top_cross_done(self):
+        color = self.faces['U'][1][1]
+        return self.faces['U'][0][1] == color and self.faces['U'][1][0] == color and self.faces['U'][2][1] == color and self.faces['U'][1][2] == color
 
     def get_state(self):
         return self.faces
