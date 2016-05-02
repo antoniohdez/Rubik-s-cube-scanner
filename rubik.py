@@ -2,14 +2,6 @@ from random import randint, choice
 
 class Rubik(object):
     """Matrix representation of a Rubik's cube"""
-    #Constats for colors
-
-    RED = 0
-    GREEN = 1
-    BLUE = 2
-    ORANGE = 3
-    YELLOW = 4
-    WHITE = 5
     faces = {}
 
     def __init__(self, faces= {
@@ -227,6 +219,9 @@ class Rubik(object):
         moves = [self.move_b, self.move_f, self.move_d, self.move_l, self.move_u, self.move_r, self.move_b_prima, self.move_f_prima, self.move_d_prima, self.move_l_prima, self.move_u_prima, self.move_r_prima]
         for i in xrange(1, randint(50, 100)):
             choice(moves)()
+
+    def get_state(self):
+        return self.faces
 
     def __str__(self):
         return str(self.faces)
