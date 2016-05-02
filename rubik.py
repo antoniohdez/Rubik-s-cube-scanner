@@ -65,6 +65,10 @@ class Rubik(object):
         self.move_r()
         self.move_r()
 
+    def move_r2(self):
+        self.move_r()
+        self.move_r()
+
     def move_l(self):
         self.faces['L'] = self.rotate_matrix(self.faces['L'])
         self.faces['L'] = self.rotate_matrix(self.faces['L'])
@@ -88,6 +92,10 @@ class Rubik(object):
 
     def move_l_prima(self):
         self.move_l()
+        self.move_l()
+        self.move_l()
+
+    def move_l2(self):
         self.move_l()
         self.move_l()
 
@@ -117,6 +125,10 @@ class Rubik(object):
         self.move_u()
         self.move_u()
 
+    def move_u2(self):
+        self.move_u()
+        self.move_u()
+
     def move_d(self):
         self.faces['D'] = self.rotate_matrix(self.faces['D'])
         self.faces['D'] = self.rotate_matrix(self.faces['D'])
@@ -143,7 +155,11 @@ class Rubik(object):
         self.move_d()
         self.move_d()
 
-    def move_f(self): #tested
+    def move_d2(self):
+        self.move_d()
+        self.move_d()
+
+    def move_f(self):
         self.faces['F'] = self.rotate_matrix(self.faces['F'])
         self.faces['F'] = self.rotate_matrix(self.faces['F'])
         self.faces['F'] = self.rotate_matrix(self.faces['F'])
@@ -169,7 +185,11 @@ class Rubik(object):
         self.move_f()
         self.move_f()
 
-    def move_b(self): #tested
+    def move_f2(self):
+        self.move_f()
+        self.move_f()
+
+    def move_b(self):
         self.faces['B'] = self.rotate_matrix(self.faces['B'])
         self.faces['B'] = self.rotate_matrix(self.faces['B'])
         self.faces['B'] = self.rotate_matrix(self.faces['B'])
@@ -192,6 +212,10 @@ class Rubik(object):
 
     def move_b_prima(self):
         self.move_b()
+        self.move_b()
+        self.move_b()
+
+    def move_b2(self):
         self.move_b()
         self.move_b()
 
