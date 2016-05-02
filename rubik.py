@@ -1,4 +1,5 @@
 from random import randint, choice
+from copy import deepcopy
 
 class Rubik(object):
     """Matrix representation of a Rubik's cube"""
@@ -258,6 +259,9 @@ class Rubik(object):
 
     def get_state(self):
         return self.faces
+
+    def copy(self):
+        return deepcopy(self)
 
     def __str__(self):
         return str(self.faces)
