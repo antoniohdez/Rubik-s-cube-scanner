@@ -62,9 +62,21 @@ def solve(rubik, debug=False):
 		rubik.describe()
 
 	needed_moves.extend(phase_one(rubik, debug))
+	if debug:
+		print needed_moves
+		rubik.describe()
 	needed_moves.extend(phase_two(rubik, debug))
+	if debug:
+		print needed_moves
+		rubik.describe()
 	needed_moves.extend(phase_three(rubik, debug))
+	if debug:
+		print needed_moves
+		rubik.describe()
 	needed_moves.extend(phase_four(rubik, debug))
+	if debug:
+		print needed_moves
+		rubik.describe()
 		
 
 	return needed_moves
@@ -111,7 +123,10 @@ def validate_phase_one(rubik):
 
 def phase_one(rubik, debug):
 	tree = init_phase(rubik)
-	return bfs(rubik, tree, 'phase_one', validate_phase_one)
+	moves = bfs(rubik, tree, 'phase_one', validate_phase_one)
+	if debug:
+		print tree
+	return moves
 
 
 def validate_phase_two_edges(rubik):
@@ -128,12 +143,18 @@ def phase_two(rubik, debug):
 
 def phase_two_edges(rubik, debug):
 	tree = init_phase(rubik)
-	return bfs(rubik, tree, 'phase_two', validate_phase_two_edges)
+	moves = bfs(rubik, tree, 'phase_two', validate_phase_two_edges)
+	if debug:
+		print tree
+	return moves
 
 
 def phase_two_corners(rubik, debug):
 	tree = init_phase(rubik)
-	return bfs(rubik, tree, 'phase_two', validate_phase_two_corners)
+	moves = bfs(rubik, tree, 'phase_two', validate_phase_two_corners)
+	if debug:
+		print tree
+	return moves
 
 def validate_phase_three_edges(rubik):
 	return False
@@ -149,18 +170,27 @@ def phase_three(rubik, debug):
 
 def phase_three_corners(rubik, debug):
 	tree = init_phase(rubik)
-	return bfs(rubik, tree, 'phase_three', validate_phase_three_corners)
+	moves = bfs(rubik, tree, 'phase_three', validate_phase_three_corners)
+	if debug:
+		print tree
+	return moves
 
 def phase_three_edges(rubik, debug):
 	tree = init_phase(rubik)
-	return bfs(rubik, tree, 'phase_three', validate_phase_three_edges)
+	moves = bfs(rubik, tree, 'phase_three', validate_phase_three_edges)
+	if debug:
+		print tree
+	return moves
 
 def validate_phase_four(rubik):
 	return rubik.is_solved()
 
 def phase_four(rubik, debug):
 	tree = init_phase(rubik)
-	return bfs(rubik, tree, 'phase_four', validate_phase_four)
+	moves = bfs(rubik, tree, 'phase_four', validate_phase_four)
+	if debug:
+		print tree
+	return moves
 
 if __name__ == '__main__':
 	rubik = Rubik()
