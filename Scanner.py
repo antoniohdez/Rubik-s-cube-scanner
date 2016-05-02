@@ -1,5 +1,11 @@
 from collections import Counter
+from cube_interactive import Cube
 import numpy as np
+
+import matplotlib.pyplot as plt
+from matplotlib import widgets
+from projection import Quaternion, project_points
+
 import json
 import math
 import cv2
@@ -9,6 +15,7 @@ class Scanner:
     current_face = []
     COLOR_SAMPLES = []
     COLORS = []
+    POSSIBLE_FACES = ['B', 'R', 'F', 'L', 'D', 'U']
 
     def __init__(self, dimensions = 3, frame_size = (640, 480), proportion = 3, color_samples = 'resources/color_samples.json', colors = 'resources/colors.json'):
         self.dimensions = dimensions
@@ -22,7 +29,6 @@ class Scanner:
             self.COLOR_SAMPLES = json.load(json_file)
         with open(colors) as json_file:
             self.COLORS = json.load(json_file)
-
 
     def draw_grid(self, frame):        
         #self.detect_shapes(frame)
@@ -46,18 +52,58 @@ class Scanner:
 
         if cv2.waitKey(1) & 0xFF == ord('c'):
             self.capture_face()
+        if cv2.waitKey(1) & 0xFF == ord('d'):
+            self.delete_face()
 
     def capture_face(self):
+        if len(self.faces) < 6:
+            face = []
+            for row in self.current_face:
+                face.append([])
+                for cell in row:
+                    face[-1].append(cell)
+
+
+            self.faces[self.POSSIBLE_FACES[len(self.faces)]] = face
+            print face
+
+        if len(self.faces) == 6:
+            colors = []
+            colors.append(self.map_face( self.faces["B"] ))
+            colors.append(self.map_face( self.faces["F"] ))
+            colors.append(self.map_face( self.faces["R"] ))
+            colors.append(self.map_face( self.faces["L"] ))
+            colors.append(self.map_face( self.faces["D"] ))
+            colors.append(self.map_face( self.faces["U"] ))
+
+            # colors = [[0,1,2,3,4,5,3,2,4], [0,1,2,3,4,5,3,2,4], [0,1,2,3,4,5,3,2,4], [0,1,2,3,4,5,3,2,4], [0,1,2,3,4,5,3,2,4], [0,1,2,3,4,5,3,2,4]]
+            c = Cube(self.dimensions, None, None, colors)
+            c.draw_interactive()
+            plt.show()
+            # Cube visualization
+
+    def map_face(self, value):
         face = []
-        for row in self.current_face:
-            face.append([])
-            for cell in row:
-                face[-1].append(cell)
+        for row in value:
+            for color in row:
+                if color == [255.0, 255.0, 255.0]: # White
+                    face.append(0)
+                elif color == [255.0, 255.0, 0]: # Orange
+                    face.append(1)
+                elif color == [0.0, 0.0, 255.0]: # Blue
+                    face.append(2)
+                elif color == [0.0, 255.0, 0.0]: # Green
+                    face.append(3)
+                elif color == [255.0, 128.0, 0.0]: #Orange
+                    face.append(4)
+                elif color == [255.0, 0.0, 0.0]: # Red
+                    face.append(5)
+                print color
+        return face
 
-        possible_faces = ['B', 'R', 'F', 'L', 'D', 'U']
-
-        self.faces[possible_faces[len(self.faces)]] = face
-        print face
+    def delete_face(self):
+        if len(self.faces) >= 0:
+            del self.faces[self.POSSIBLE_FACES[len(self.faces) - 1]]
 
     def draw_mean_color(self, frame, start, end, cell_indexes, debug = False):
         # Getting mean color 
@@ -115,7 +161,8 @@ class Scanner:
         return self.COLORS[closest['name']]
 
     def draw_faces(self, frame):
-        possible_faces = ['B', 'R', 'F', 'L', 'D', 'U']
+        self.POSSIBLE_FACES = ['B', 'R', 'F', 'L', 'D', 'U']
+
         # Iterate faces
         for key, value in self.faces.iteritems():
             # Iterate rows
@@ -123,8 +170,8 @@ class Scanner:
                 #Iterate columns
                 for j in xrange(len(self.faces[key][i])):
                     cv2.rectangle(  frame, 
-                                    (30 * i + self.margin + possible_faces.index(key) * 105, 30 * j + self.margin + 390), 
-                                    (30 * i + 30 - self.margin + possible_faces.index(key) * 105, 30 * j + 30 - self.margin + 390), 
+                                    (30 * i + self.margin + self.POSSIBLE_FACES.index(key) * 105, 30 * j + self.margin + 390), 
+                                    (30 * i + 30 - self.margin + self.POSSIBLE_FACES.index(key) * 105, 30 * j + 30 - self.margin + 390), 
                                     self.faces[key][i][j], 
                                     cv2.cv.CV_FILLED
                                 )
