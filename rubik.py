@@ -5,10 +5,10 @@ class Rubik(object):
     faces = {}
 
     def __init__(self, faces= {
-            'U':[['Y' for i in range(3)] for j in range(3)], #Yellow
-            'F':[['R' for i in range(3)] for j in range(3)], #Red
-            'D':[['W' for i in range(3)] for j in range(3)], #White
-            'B':[['O' for i in range(3)] for j in range(3)], #Orange
+            'U':[['R' for i in range(3)] for j in range(3)], #Red
+            'F':[['W' for i in range(3)] for j in range(3)], #White
+            'D':[['O' for i in range(3)] for j in range(3)], #Orange
+            'B':[['Y' for i in range(3)] for j in range(3)], #Yellow
             'L':[['B' for i in range(3)] for j in range(3)], #Blue
             'R':[['G' for i in range(3)] for j in range(3)]  #Green
         }):
@@ -264,5 +264,4 @@ class Rubik(object):
 
 if __name__ == '__main__':
     rubik = Rubik()
-
     rubik.describe()
