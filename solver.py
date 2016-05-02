@@ -55,29 +55,32 @@ def get_moves(rubik, type):
 			'f2': moves['f2'],
 			'b2': moves['b2']
 		}
-	
+
 def solve(rubik, debug=False):
 	needed_moves = []
 	if debug:
 		rubik.describe()
-
-	needed_moves.extend(phase_one(rubik, debug))
+	moves,rubik = phase_one(rubik, debug);
+	needed_moves.extend(moves)
 	if debug:
 		print needed_moves
 		rubik.describe()
-	needed_moves.extend(phase_two(rubik, debug))
+	moves,rubik = phase_two(rubik, debug);
+	needed_moves.extend(moves)
 	if debug:
 		print needed_moves
 		rubik.describe()
-	needed_moves.extend(phase_three(rubik, debug))
+	moves,rubik = phase_three(rubik, debug);
+	needed_moves.extend(moves)
 	if debug:
 		print needed_moves
 		rubik.describe()
+	moves,rubik = phase_four(rubik, debug);
 	needed_moves.extend(phase_four(rubik, debug))
 	if debug:
 		print needed_moves
 		rubik.describe()
-		
+
 
 	return needed_moves
 
@@ -94,7 +97,7 @@ def execute(instructions, step):
 		instruction()
 	return step
 
-def add_movements(tree, parent_node_id, phase, states):	
+def add_movements(tree, parent_node_id, phase, states):
 	moves = get_moves(tree.get_node(parent_node_id).identifier, phase).keys()
 	for move in moves:
 		rubik = tree.get_node(parent_node_id).identifier.copy()
@@ -115,25 +118,48 @@ def bfs(rubik, tree, phase, validate_state):
 			add_movements(tree, node.identifier, phase, states)
 			if (validate_state(current.identifier)):
 				rubik = current.identifier
-				return current.tag['steps']
+				return current.tag['steps'], rubik
 			q.append(node)
 
 def validate_phase_one(rubik):
-	return False
+	for i in xrange(3):
+		for j in xrange(3):
+			if(rubik.faces['F'][i][j] == 'R' or rubik.faces['F'][i][j] == 'O' or
+					rubik.faces['B'][i][j] == 'R' or rubik.faces['B'][i][j] == 'O' or
+					rubik.faces['U'][i][j] == 'W' or rubik.faces['U'][i][j] == 'Y' or
+					rubik.faces['D'][i][j] == 'W' or rubik.faces['D'][i][j] == 'Y'):
+				return False
+	return True
 
 def phase_one(rubik, debug):
 	tree = init_phase(rubik)
 	moves = bfs(rubik, tree, 'phase_one', validate_phase_one)
 	if debug:
-		print tree
+		pass #print tree
 	return moves
 
 
 def validate_phase_two_edges(rubik):
-	return False
+	if (rubik.faces['U'][0][1] != 'R' and rubik.faces['U'][0][1] != 'O' or
+			rubik.faces['U'][1][0] != 'R' and rubik.faces['U'][1][0] != 'O' or
+			rubik.faces['U'][1][1] != 'R' and rubik.faces['U'][1][1] != 'O' or
+			rubik.faces['U'][1][2] != 'R' and rubik.faces['U'][1][2] != 'O' or
+			rubik.faces['U'][2][1] != 'R' and rubik.faces['U'][2][1] != 'O' or
+			rubik.faces['D'][0][1] != 'R' and rubik.faces['D'][0][1] != 'O' or
+			rubik.faces['D'][1][0] != 'R' and rubik.faces['D'][1][0] != 'O' or
+			rubik.faces['D'][1][1] != 'R' and rubik.faces['D'][1][1] != 'O' or
+			rubik.faces['D'][1][2] != 'R' and rubik.faces['D'][1][2] != 'O' or
+			rubik.faces['D'][2][1] != 'R' and rubik.faces['D'][2][1] != 'O'):
+		return False
+	return True
 
 def validate_phase_two_corners(rubik):
-	return False
+	for i in xrange(3):
+		for j in xrange(3):
+			if(rubik.faces['U'][i][j] != 'R' and rubik.faces['U'][i][j] != 'O' or
+					rubik.faces['D'][i][j] != 'R' and rubik.faces['D'][i][j] == 'O'):
+				return False
+	return True
 
 def phase_two(rubik, debug):
 	moves = []
@@ -157,15 +183,34 @@ def phase_two_corners(rubik, debug):
 	return moves
 
 def validate_phase_three_edges(rubik):
-	return False
+	for i in xrange(3):
+		for j in xrange(3):
+			if(rubik.faces['F'][i][j] != 'W' and rubik.faces['F'][i][j] != 'Y' or
+					rubik.faces['B'][i][j] != 'W' and rubik.faces['B'][i][j] != 'Y' or
+					rubik.faces['U'][i][j] != 'R' and rubik.faces['U'][i][j] != 'O' or
+					rubik.faces['D'][i][j] != 'R' and rubik.faces['D'][i][j] != 'O' or
+					rubik.faces['R'][i][j] != 'G' and rubik.faces['R'][i][j] != 'B' or
+					rubik.faces['L'][i][j] != 'G' and rubik.faces['L'][i][j] != 'B' ):
+				return False
+	return True
 
 def validate_phase_three_corners(rubik):
+	if(rubik.faces['D'][0][0] == rubik.faces['U'][0][2]): # all matches
+		if(rubik.faces['D'][0][2] == rubik.faces['U'][2][2] and
+				rubik.faces['D'][2][0] == rubik.faces['U'][0][0] and
+				rubik.faces['D'][2][2] == rubik.faces['U'][0][2]):
+			return True
+	else: #no matches
+		if(rubik.faces['D'][0][2] != rubik.faces['U'][2][2] and
+				rubik.faces['D'][2][0] != rubik.faces['U'][0][0] and
+				rubik.faces['D'][2][2] != rubik.faces['U'][0][2]):
+			return True
 	return False
 
 def phase_three(rubik, debug):
 	moves = []
-	moves.extend(phase_three_edges(rubik, debug))
 	moves.extend(phase_three_corners(rubik, debug))
+	moves.extend(phase_three_edges(rubik, debug))
 	return moves
 
 def phase_three_corners(rubik, debug):
