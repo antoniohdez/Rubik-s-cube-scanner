@@ -5,7 +5,7 @@ Thistlethwaite's algorithm.
 */
 
 #include <iostream>
-#include <string>
+#include <cstring>
 //using namespace std;
 char
 // RLFBUD is the face order used for input, so that a correctly oriented

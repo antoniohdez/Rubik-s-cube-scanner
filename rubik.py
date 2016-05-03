@@ -256,8 +256,9 @@ class Rubik(object):
         moves = [('b', self.move_b), ('f', self.move_f), ('d', self.move_d), ('l', self.move_l), ('u', self.move_u), ('r', self.move_r), ('b_prima', self.move_b_prima), ('f_prima', self.move_f_prima), ('d_prima', self.move_d_prima), ('l_prima', self.move_l_prima), ('u_prima', self.move_u_prima), ('r_prima', self.move_r_prima)]
         for i in xrange(1, limit):
             ch = choice(moves)
-            print ch[0]
+            print ch[0] + ',',
             ch[1]()
+        print ''
 
     def is_top_cross_done(self):
         color = self.faces['U'][1][1]

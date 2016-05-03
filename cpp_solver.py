@@ -38,7 +38,8 @@ def rubik_to_args(rubik, command):
     return out
 
 def solve(rubik):
-    return subprocess.Popen(rubik_to_args(rubik, "bin/Solver.exe"), stdout=subprocess.PIPE).communicate()[0]
+    return subprocess.Popen(rubik_to_args(rubik, "bin/Solver.exe"), stdout=subprocess.PIPE).communicate()[0].split()
+
 
 #input_arg = "UF/ UR/ UB/ UL/ DF/ DR/ DB/ DL/ FR/ FL/ BR/ BL/ UFR/ URB/ UBL/ ULF/ DRF/ DFL/ DLB/ DBR";
 if __name__ == '__main__':
