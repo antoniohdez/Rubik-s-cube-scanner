@@ -261,7 +261,7 @@ class Rubik(object):
 
     def is_top_cross_done(self):
         color = self.faces['U'][1][1]
-        return self.faces['U'][0][1] == color and self.faces['U'][1][0] == color and self.faces['U'][2][1] == color and self.faces['U'][1][2] == color
+        return [self.faces['U'][2][1] == color, self.faces['U'][1][2] == color, self.faces['U'][0][1] == color, self.faces['U'][1][0] == color]
 
     def get_state(self):
         return self.faces
