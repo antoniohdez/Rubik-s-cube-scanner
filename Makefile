@@ -1,0 +1,1 @@
+g++ resources/jaap_solver.cpp -Bdynamic -static -lgcc_s -Bstatic -o bin/Solver.exe

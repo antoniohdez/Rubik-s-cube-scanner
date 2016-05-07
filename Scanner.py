@@ -10,12 +10,15 @@ import json
 import math
 import cv2
 
+from rubik import Rubik
+from cpp_solver import solve
+
 class Scanner:
     faces = {}
     current_face = []
     COLOR_SAMPLES = []
     COLORS = []
-    POSSIBLE_FACES = ['B', 'R', 'F', 'L', 'D', 'U']
+    POSSIBLE_FACES = ['B', 'L', 'F', 'R', 'D', 'U']
 
     def __init__(self, dimensions = 3, frame_size = (640, 480), proportion = 3, color_samples = 'resources/color_samples.json', colors = 'resources/colors.json'):
         self.dimensions = dimensions
@@ -63,8 +66,38 @@ class Scanner:
                 for cell in row:
                     face[-1].append(cell)
 
-
-            self.faces[self.POSSIBLE_FACES[len(self.faces)]] = face
+            next_face = self.POSSIBLE_FACES[len(self.faces)]
+            
+            if next_face == "B":
+                # DONE!!!!!
+                #face = face[::-1] # Hacer espejo vertical, no horizontal
+                for i in xrange(len(face)):
+                    face[i] = face[i][::-1]
+            elif next_face == "R":
+                face = face[::-1]
+                face = zip(*face[::-1])
+                # Girar 90 grados
+                # face = face[::-1]
+                # girar 90 grados, hacer espejo horizontal
+            elif next_face == "L":
+                # DONE!!!!
+                for i in xrange(len(face)):
+                    face[i] = face[i][::-1]
+                face = zip(*face[::-1])
+                
+            elif next_face == "F":
+                # DONE!!!!!
+                face = face[::-1]
+            elif next_face == "U":
+                face = face[::-1]
+                face = zip(*face[::-1])
+                pass # Girar 270 grados
+            elif next_face == "D":
+                face = face[::-1]
+                face = zip(*face[::-1])
+                pass # Espejo y 90 grados
+            
+            self.faces[next_face] = face
             print face
 
         if len(self.faces) == 6:
@@ -76,12 +109,61 @@ class Scanner:
             colors.append(self.map_face( self.faces["D"] ))
             colors.append(self.map_face( self.faces["U"] ))
 
+            
             # colors = [[0,1,2,3,4,5,3,2,4], [0,1,2,3,4,5,3,2,4], [0,1,2,3,4,5,3,2,4], [0,1,2,3,4,5,3,2,4], [0,1,2,3,4,5,3,2,4], [0,1,2,3,4,5,3,2,4]]
+            
+
+            colors_rgb = {}
+            colors_rgb["B"] = self.map_face_RGB( self.flip_matrix( self.rotate_matrix(self.faces["B"], 3)))
+            colors_rgb["F"] = self.map_face_RGB( self.flip_matrix( self.rotate_matrix(self.faces["F"], 3)))
+            colors_rgb["R"] = self.map_face_RGB( self.flip_matrix( self.rotate_matrix(self.faces["R"], 3)))
+            colors_rgb["L"] = self.map_face_RGB( self.flip_matrix( self.rotate_matrix(self.faces["L"], 3)))
+            colors_rgb["U"] = self.map_face_RGB( self.flip_matrix( self.rotate_matrix(self.faces["D"], 1)))
+            colors_rgb["D"] = self.map_face_RGB( self.flip_matrix( self.rotate_matrix(self.faces["U"], 3)))
+
+            rubik = Rubik(colors_rgb)
+            rubik.describe()
+
+
+
             c = Cube(self.dimensions, None, None, colors)
             c.draw_interactive()
             plt.show()
+            
+            solve(Rubik(colors_rgb))
             # Cube visualization
 
+    def rotate_matrix(self, matrix, n):
+        for i in xrange(n):
+            matrix = [[matrix[3 - j - 1][i] for j in range(3)] for i in range (3)]
+        return matrix
+
+    def flip_matrix(self, matrix):
+        for i in xrange(len(matrix)):
+            tmp = None
+            tmp = matrix[i][0]
+            matrix[i][0] = matrix[i][2]
+            matrix[i][2] = tmp
+        return matrix
+
+    def map_face_RGB(self, value):
+        face = [["" for _ in xrange(3)] for _ in xrange(3)]
+        for i in xrange(len(value)):
+            for j in xrange(len(value[i])):
+                if value[i][j] == [255.0, 255.0, 255.0]: # White
+                    face[i][j] = "W"
+                elif value[i][j] == [255.0, 255.0, 0]: # Yellow
+                    face[i][j] = "Y"
+                elif value[i][j] == [0.0, 0.0, 255.0]: # Blue
+                    face[i][j] = "B"
+                elif value[i][j] == [0.0, 255.0, 0.0]: # Green
+                    face[i][j] = "G"
+                elif value[i][j] == [255.0, 128.0, 0.0]: #Orange
+                    face[i][j] = "O"
+                elif value[i][j] == [255.0, 0.0, 0.0]: # Red
+                    face[i][j] = "R"
+        return face
+        
     def map_face(self, value):
         face = []
         for row in value:
@@ -161,7 +243,7 @@ class Scanner:
         return self.COLORS[closest['name']]
 
     def draw_faces(self, frame):
-        self.POSSIBLE_FACES = ['B', 'R', 'F', 'L', 'D', 'U']
+        #self.POSSIBLE_FACES = ['B', 'R', 'F', 'L', 'D', 'U']
 
         # Iterate faces
         for key, value in self.faces.iteritems():
